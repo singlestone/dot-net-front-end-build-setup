@@ -37,7 +37,11 @@ Enable optimizations in BundleConfig.cs so we can validate bundling and minifica
 BundleTable.EnableOptimizations = true;
 ```
 
-Add AspNetBundling via NuGet
+Add AspNetBundling via NuGet.  Use the UI or issue the following command from the Visual Studio Package Manager Console:
+
+```
+Install-Package AspNetBundling
+```
 
 Update BundleConfig.cs to generate source maps for minified JavaScript bundles
 
@@ -48,7 +52,11 @@ bundles.Add(new ScriptWithSourceMapBundle("~/bundles/jquery").Include(
 
 ### Pre-Processing LESS Files
 
-Install dotless via NuGet
+Install dotless via NuGet.  Use the UI or issue the following command from the Visual Studio Package Manager Console:
+
+```
+Install-Package dotless
+```
 
 Add to web.config to prevent HttpHandler error:  
 
