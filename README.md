@@ -106,3 +106,24 @@ Install Karma via npm:
 npm install karma 
 ```
 
+More to come...
+
+
+### JavaScript Linting
+
+Coming soon...
+
+
+### CSS/LESS Linting
+
+Coming soon...
+
+
+### TypeScript
+
+Coming soon (maybe)...
+
+
+### ES6+ Transpilation
+
+Coming soon...
