@@ -1,21 +1,52 @@
-+ Create MVC5 Web Application
-+ Disable BrowserLink
-+ Update JavaScript libraries via NuGet
-+ Create Scripts/lib directory, make subdirectories for each JavaScript library and then use this new directory structure to organize JavaScript library files.
-+ Remove JavaScript library entries from packages.config so they never get restored to their old locations
-+ Update BundleConfig.cs
-+ Enable optimizations in BundleConfig.cs so we can validate bundling and minification
-+ Add AspNetBundling via NuGet
-+ Update BundleConfig.cs to generate source maps for minified JavaScript bundles
-+ Install dotless via NuGet
-+ Add to web.config:  
+This is a sample ASP.NET MVC5 Web Application with build configuration for static resources (pre-processing, bundling, minification, map-file generation, etc.).  Listed below are the steps used to set this project up after instantiating the initial project template in Visual Studio 2013.
+
+
+
+
+Create ASP.NET MVC Web Application
+
+Disable BrowserLink by adding the following to web.config:
+
+    <appSettings>
+        <add key="vs:EnableBrowserLink" value="false" />
+    </appSettings>
+
+
+Update JavaScript libraries via NuGet to get latest versions (template is probably out-of-date)
+
+Dumping all JavaScript library files into the default Scripts directory makes a mess.  Instead, create a Scripts/lib directory, make subdirectories within it for each JavaScript library, and then use this new directory structure to organize JavaScript library files.
+
+Remove JavaScript library entries from packages.config so they never get accidentally updated by someone via NuGet or unintentionally restored to their old locations via NuGet Package Restore
+
+Update BundleConfig.cs so that file locations of bundled files are updated to match the new directory structure
+
+    bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                "~/Scripts/lib/jquery/jquery-{version}.js"));
+
+
+Enable optimizations in BundleConfig.cs so we can validate bundling and minification
+
+    BundleTable.EnableOptimizations = true;
+
+
+Add AspNetBundling via NuGet
+
+Update BundleConfig.cs to generate source maps for minified JavaScript bundles
+
+    bundles.Add(new ScriptWithSourceMapBundle("~/bundles/jquery").Include(
+                "~/Scripts/lib/jquery/jquery-{version}.js"));
+
+
+Install dotless via NuGet
+
+Add to web.config to prevent HttpHandler error:  
 
     <system.webServer>
         <validation validateIntegratedModeConfiguration="false" />
     </system.webServer>
 
 
-+ Create LessTranform.cs and update BundleConfig.cs to use it for LESS files:
+Create LessTranform.cs class to implement the LESS transform: 
 
     public class LessTransform : IBundleTransform
     {
@@ -26,7 +57,8 @@
         }
     }
 
-    In BundleConfig.cs:
+
+Update BundleConfig.cs to use the new transform for LESS files:
 
     var styleBundle = new StyleBundle("~/Content/css").Include(
         "~/Content/bootstrap.css",
@@ -38,4 +70,12 @@
     bundles.Add(styleBundle);
 
 
-+ Start up the application to make sure there are no errors related to static resource loading
+JavaScript Testing should (at a minimum) include Karma as the test runner.  Anything else is lame.  This means that we're going to use Node.js.  You'll need to install Node.js on each development machine that will run JavaScript tests (including the build server).  The following is the current recommendation for Visual Studio setup.
+
+Install Node.js from https://nodejs.org/
+
+Install Karma via npm:
+
+    npm install karma 
+
+
