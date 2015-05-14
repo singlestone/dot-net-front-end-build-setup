@@ -146,6 +146,8 @@
     <Content Include="Content\header.less" />
     <None Include="Scripts\lib\jquery\jquery-2.1.4.intellisense.js" />
     <Content Include="Icon.png" />
+    <Content Include="Scripts\app\sample.spec.js" />
+    <Content Include="Scripts\app\sample.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\lib\jquery\jquery-2.1.4.js" />
