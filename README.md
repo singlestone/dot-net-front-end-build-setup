@@ -7,9 +7,11 @@ Create ASP.NET MVC Web Application
 
 Disable BrowserLink by adding the following to web.config:
 
+    ```XML
     <appSettings>
         <add key="vs:EnableBrowserLink" value="false" />
     </appSettings>
+    ```
 
 
 Update JavaScript libraries via NuGet to get latest versions (template is probably out-of-date)
@@ -20,34 +22,43 @@ Remove JavaScript library entries from packages.config so they never get acciden
 
 Update BundleConfig.cs so that file locations of bundled files are updated to match the new directory structure
 
+    ```C#
     bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/Scripts/lib/jquery/jquery-{version}.js"));
+    ```
 
 
 Enable optimizations in BundleConfig.cs so we can validate bundling and minification
 
+    ```C#
     BundleTable.EnableOptimizations = true;
+    ```
 
 
 Add AspNetBundling via NuGet
 
 Update BundleConfig.cs to generate source maps for minified JavaScript bundles
 
+    ```C#
     bundles.Add(new ScriptWithSourceMapBundle("~/bundles/jquery").Include(
                 "~/Scripts/lib/jquery/jquery-{version}.js"));
+    ```
 
 
 Install dotless via NuGet
 
 Add to web.config to prevent HttpHandler error:  
 
+    ```XML
     <system.webServer>
         <validation validateIntegratedModeConfiguration="false" />
     </system.webServer>
+    ```
 
 
 Create LessTranform.cs class to implement the LESS transform: 
 
+    ```C#
     public class LessTransform : IBundleTransform
     {
         public void Process(BundleContext context, BundleResponse response)
@@ -56,10 +67,12 @@ Create LessTranform.cs class to implement the LESS transform:
             response.ContentType = "text/css";
         }
     }
+    ```
 
 
 Update BundleConfig.cs to use the new transform for LESS files:
 
+    ```C#
     var styleBundle = new StyleBundle("~/Content/css").Include(
         "~/Content/bootstrap.css",
         "~/Content/site.css",
@@ -68,6 +81,7 @@ Update BundleConfig.cs to use the new transform for LESS files:
     styleBundle.Transforms.Add(new LessTransform());
     styleBundle.Transforms.Add(new CssMinify());
     bundles.Add(styleBundle);
+    ```
 
 
 JavaScript Testing should (at a minimum) include Karma as the test runner.  Anything else is lame.  This means that we're going to use Node.js.  You'll need to install Node.js on each development machine that will run JavaScript tests (including the build server).  The following is the current recommendation for Visual Studio setup.
